@@ -1,18 +1,13 @@
 import { Request, Response } from 'express';
 import { pricingFormSchema, PricingFormData } from '../schemas/pricingValidation.js';
-import { simulate, SimulatorInputs } from '../services/simulationService.js';
+import { simulate } from '../services/simulationService.js';
 import { z } from 'zod';
 
-export const calculatePricing = async (req: Request, res: Response): Promise<void> => {
+export const simulatePricing = async (req: Request, res: Response): Promise<void> => {
   try {
     const validatedInputs: PricingFormData = pricingFormSchema.parse(req.body);
 
-    console.log('Received pricing data API:', validatedInputs);
-
-    // Frontend now sends percentages as decimals, so no conversion needed
     const results = simulate(validatedInputs);
-
-    console.table(results);
 
     res.status(200).json({
       success: true,
@@ -33,7 +28,7 @@ export const calculatePricing = async (req: Request, res: Response): Promise<voi
       });
     } else {
       // Other errors
-      console.error('Error in calculatePricing:', error);
+      console.error('Error in simulatePricing:', error);
       res.status(500).json({
         success: false,
         message: 'Internal server error',

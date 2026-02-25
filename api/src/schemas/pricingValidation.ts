@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// Zod validation schema for pricing form (same as frontend)
+// Zod validation schema for pricing form
 export const pricingFormSchema = z.object({
   pricingModel: z.enum(['initialResponse', 'fixedDiscount']),
   listPricePerAdministration: z.number().min(0, 'Must be a positive number'),

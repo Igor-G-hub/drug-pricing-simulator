@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import calculationRoutes from './routes/calculationRoutes.js';
+import simulationRoutes from './routes/simulationRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,8 +18,8 @@ app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', message: 'Drug Simulator API is running' });
 });
 
-// Calculation routes
-app.use('/api', calculationRoutes);
+// Simulation routes
+app.use('/api', simulationRoutes);
 
 // Start server
 app.listen(PORT, () => {

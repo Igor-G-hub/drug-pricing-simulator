@@ -39,6 +39,15 @@ export default {
         md: "calc(0.5rem - 2px)",
         sm: "calc(0.5rem - 4px)",
       },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 0.15s ease-in-out",
+      },
     },
   },
   plugins: [],

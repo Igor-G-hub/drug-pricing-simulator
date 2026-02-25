@@ -1,3 +1,7 @@
+export function roundToDecimals(value: number, decimals: number = 2): number {
+  return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
+}
+
 export const formatCurrency = (value: number): string => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',

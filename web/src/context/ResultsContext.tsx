@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
 
 export interface MonthResult {
   month: number;
@@ -10,8 +11,8 @@ export interface MonthResult {
 }
 
 interface ResultsContextType {
-  results: MonthResult[];
-  setResults: (results: MonthResult[]) => void;
+  results: MonthResult[] | null;
+  setResults: (results: MonthResult[] | null) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 }
@@ -19,7 +20,7 @@ interface ResultsContextType {
 const ResultsContext = createContext<ResultsContextType | undefined>(undefined);
 
 export const ResultsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [results, setResults] = useState<MonthResult[]>([]);
+  const [results, setResults] = useState<MonthResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   return (

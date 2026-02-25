@@ -1,3 +1,5 @@
+import { roundToDecimals } from '../utils/formatValues.js';
+
 export interface SimulatorInputs {
   pricingModel: 'initialResponse' | 'fixedDiscount';
   listPricePerAdministration: number;
@@ -49,7 +51,7 @@ function getActivePatients(
     } else {
       // initialResponse
       if (monthsInTreatment === 1) {
-        // Month 1: ALL patients get administered (we don't know responders yet)
+        // Month 1: ALL patients get administered 
         fullPayers += cohortSize;
         allAdmins  += cohortSize * administrationsPerPatientPerMonth;
       } else {
@@ -73,26 +75,20 @@ function calcInitialResponse(inputs: SimulatorInputs): MonthResult[] {
 
     // Revenue: only responders (and all month-1 patients) pay list price
     const netRevenue = fullPayers * administrationsPerPatientPerMonth * listPricePerAdministration;
-
-    // allAdmins equals fullPayers * appm here because non-responders
-    // simply aren't administered after month 1 — they dropped out.
-    // So avgNetPrice = listPricePerAdministration (no price reduction occurred).
-    //
-    // BUT: the meaningful discount metric is vs "what would full list
-    // for the full expected cohort have cost the payer?"
-    // We calculate it against the ACTUAL admins that happened.
+   
     const avgNetPricePerAdmin = allAdmins > 0 ? netRevenue / allAdmins : 0;
 
     // Discount relative to list price
     const percentDiscount = 1 - avgNetPricePerAdmin / listPricePerAdministration;
     const absoluteDiscount = listPricePerAdministration - avgNetPricePerAdmin;
 
+    // Round at output to avoid floating-point precision artifacts in response values.
     results.push({
       month,
-      netRevenue,
-      avgNetPricePerAdmin,
-      percentDiscount,
-      absoluteDiscount,
+      netRevenue: roundToDecimals(netRevenue),
+      avgNetPricePerAdmin: roundToDecimals(avgNetPricePerAdmin),
+      percentDiscount: roundToDecimals(percentDiscount),
+      absoluteDiscount: roundToDecimals(absoluteDiscount),
       adminCount: allAdmins,
     });
   }
@@ -107,20 +103,21 @@ function calcFixedDiscount(inputs: SimulatorInputs): MonthResult[] {
   console.log('Fixed discount rate:', fixedDiscountRate);
 
   const netPricePerAdmin = listPricePerAdministration * (1 - fixedDiscountRate); // constant
-  const percentDiscount  = fixedDiscountRate;                   // constant
-  const absoluteDiscount = listPricePerAdministration - netPricePerAdmin;        // constant
+  const percentDiscount  = fixedDiscountRate; // constant
+  const absoluteDiscount = listPricePerAdministration - netPricePerAdmin; // constant
 
   for (let month = 1; month <= timeHorizon; month++) {
     const { allAdmins } = getActivePatients(month, inputs, "fixedDiscount");
 
     const netRevenue = allAdmins * netPricePerAdmin;
 
+    // Round at output to avoid floating-point precision artifacts in response values.
     results.push({
       month,
-      netRevenue,
-      avgNetPricePerAdmin: netPricePerAdmin,
-      percentDiscount,
-      absoluteDiscount,
+      netRevenue: roundToDecimals(netRevenue),
+      avgNetPricePerAdmin: roundToDecimals(netPricePerAdmin),
+      percentDiscount: roundToDecimals(percentDiscount),
+      absoluteDiscount: roundToDecimals(absoluteDiscount),
       adminCount: allAdmins,
     });
   }
