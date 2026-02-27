@@ -2,7 +2,7 @@ import React from 'react';
 
 const ResultsTableSkeleton: React.FC = () => {
   return (
-    <div className="h-full animate-fadeIn overflow-x-auto">
+    <div className="h-full overflow-x-auto">
       <div className="w-full min-w-[900px] h-full rounded-lg border border-white/20 bg-[#1a4a4c]/55 flex flex-col">
         <div className="grid grid-cols-6 border-b border-white/20 px-4 py-3">
           {Array.from({ length: 6 }).map((_, idx) => (

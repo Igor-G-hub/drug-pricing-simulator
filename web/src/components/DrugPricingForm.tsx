@@ -8,6 +8,8 @@ import RadioGroupField from './form/RadioGroupField';
 import RangeSliderField from './form/RangeSliderField';
 import { SimulationService } from '../services/SimulationService';
 
+const TEST_LOADING_DELAY_MS = 300;
+
 const initialValues: PricingFormValues = {
   pricingModel: 'initialResponse',
   listPricePerAdministration: 3500,
@@ -70,6 +72,8 @@ const DrugPricingForm: React.FC = () => {
       console.error('Failed to call API:', error);
       setResults([]);
     } finally {
+      // Small artificial delay to make loading/transition states easy to validate visually.
+      await new Promise((resolve) => setTimeout(resolve, TEST_LOADING_DELAY_MS));
       setIsLoading(false);
     }
   };

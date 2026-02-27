@@ -87,7 +87,7 @@ function calcInitialResponse(inputs: SimulatorInputs): MonthResult[] {
       month,
       netRevenue: roundToDecimals(netRevenue),
       avgNetPricePerAdmin: roundToDecimals(avgNetPricePerAdmin),
-      percentDiscount: roundToDecimals(percentDiscount),
+      percentDiscount: roundToDecimals(percentDiscount, 4),
       absoluteDiscount: roundToDecimals(absoluteDiscount),
       adminCount: allAdmins,
     });
@@ -116,7 +116,7 @@ function calcFixedDiscount(inputs: SimulatorInputs): MonthResult[] {
       month,
       netRevenue: roundToDecimals(netRevenue),
       avgNetPricePerAdmin: roundToDecimals(netPricePerAdmin),
-      percentDiscount: roundToDecimals(percentDiscount),
+      percentDiscount: roundToDecimals(percentDiscount, 4),
       absoluteDiscount: roundToDecimals(absoluteDiscount),
       adminCount: allAdmins,
     });
